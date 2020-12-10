@@ -2,6 +2,8 @@ import pygame as pg
 from enum import Enum
 import colors
 from abc import ABC
+from random import randrange as rrange
+
 
 FONT_SIZE = 40
 
@@ -246,10 +248,6 @@ class Pixel(GraphicManager):
         self.size = size
 
 
-
-
-
-
 def DrawGrid(surface, block_size, color=colors.WHITE, grid_size=4):
     """DRAW GRID!"""
     grid_color = color
@@ -263,3 +261,14 @@ def DrawGrid(surface, block_size, color=colors.WHITE, grid_size=4):
     for y_row in range(surface_size[1] // block_size + 2):
         y += block_size
         pg.draw.line(surface, grid_color, (0, y), (surface_size[0], y), grid_size)
+
+
+def RandomColors(count):
+    colors = list()
+    for c in range(count):
+        R = rrange(0, 255)
+        G = rrange(0, 255)
+        B = rrange(0, 255)
+        color = (R, G, B)
+        colors.append(color)
+    return colors
