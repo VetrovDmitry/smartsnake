@@ -1,0 +1,2 @@
+# smartsnake
+snake mind research
