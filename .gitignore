@@ -1,0 +1,7 @@
+mapeditor.py
+nn.py
+.idea/
+__pycache__/
+pads/
+screens/
+snakenviron/
