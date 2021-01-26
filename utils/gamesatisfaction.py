@@ -1,7 +1,17 @@
-from handmade import AllSprites, smart_pos_for_area
-from objects import Wall
-import colors
+from utils.handmade import AllSprites, smart_pos_for_area
+from gobjects.wall import Wall
+from guis import colors
+import pygame as pg
 
+
+def Pause():
+    pause = True
+    while pause:
+        for event in pg.event.get():
+            if event.type == pg.QUIT:
+                pg.quit()
+            if event.type == pg.KEYDOWN:
+                pause = False
 
 
 def WorldRules(m_obj, f_obj, w_obj):
@@ -13,11 +23,12 @@ def WorldRules(m_obj, f_obj, w_obj):
             food_object = f_obj.getSpriteByPos(sprite_head_pos)
             food_area = food_object.getArea()
             new_pos = smart_pos_for_area(food_area, moving_poss)
-            eaten_food.changeLoc(new_pos)
+            eaten_food.changePos(new_pos)
             sprite.addBlock()
-            sprite.score += 1
         elif sprite_head_pos in w_obj.getAllPositions():
             sprite.coll()
+        # elif sprite_head_pos in m_obj.getExceptHead(sprite_head_pos):
+        #     print('ddddd')
 
 
 class Map:

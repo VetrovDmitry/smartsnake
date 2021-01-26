@@ -1,5 +1,21 @@
 import numpy as np
 from cmath import sin, cos, acos, asin, pi
+import random
+import time
+
+
+def sig(x):
+    return 1 / (1 + np.exp(-x))
+
+def sig_der(x):
+    return x * (1 - x)
+
+def stabilitron(x):
+    if x >= 0.85:
+        y = 1
+    else:
+        y = 0
+    return y
 
 def multiplyByRow(matrix_1, matrix_2):
     if len(matrix_1) == len(matrix_2):
@@ -28,7 +44,7 @@ class Matrix:
         self.matrix = self.matrix.reshape(new_shape)
 
     def T(self):
-        self.matrix.T
+        return self.matrix.T
 
     def refresh(self):
         self.matrix = self.createMatrix(self.size, self.substrate)
@@ -49,6 +65,9 @@ class Matrix:
 
     def prettyPrint(self):
         print(self.matrix)
+
+    def appendX(self, x):
+        self.matrix = np.append(self.matrix, x)
 
     def rotate(self, angle_of_rotation):
 
@@ -75,6 +94,13 @@ class Matrix:
                 types.append(x)
 
         return (pixels, types)
+
+    def setCenter(self, new_value):
+        rows = len(self.matrix)
+        columns = len(self.matrix[0])
+        center_x = columns // 2
+        center_y = rows // 2
+        self.matrix[center_y][center_x] = new_value
 
 
 def centerToEdge(m_size, pos):
@@ -122,13 +148,13 @@ def radToDegrees(rads):
     degrees = 180 * rads / pi
     return degrees
 
+
 class Layer:
-    def __init__(self, size, input_dim=1):
+    def __init__(self, size):
         self.i1 = size[0]
         self.i2 = size[1]
-        self.size = size * input_dim
+        self.size = size
         self.weights = self.__createWeights(self.size)
-
 
     def __createWeights(self, size):
         new_weights = np.random.normal(0.0, 1, size)
@@ -148,18 +174,6 @@ class Layer:
         return self.errors
 
 
-def sig(x):
-    return 1 / (1 + np.exp(-x))
-
-def sig_der(x):
-    return x * (1 - x)
-
-def stabilitron(x):
-    if x >= 0.85:
-        y = 1
-    else:
-        y = 0
-    return y
 
 class SnakeBrain:
     def __init__(self):
@@ -168,8 +182,17 @@ class SnakeBrain:
     def getLen(self):
         return len(self.layers)
 
+    def addLayerWithWeights(self, weights):
+        layer = Layer(weights.shape)
+        layer.setWeights(weights)
+        self.layers.append(layer)
+
     def addLayer(self, layer_size):
         self.layers.append(Layer(layer_size))
+
+    def newBrain(self):
+        new_brain_wights = self.getWeights()
+        return new_brain_wights
 
     def predict(self, X):
         pass
@@ -207,6 +230,7 @@ class SnakeBrain:
             dd_input = multiplyByRow(input_i, d_input_i)
             current_weights = self.layers[i].weights
             current_errors = err
+            print(current_weights, dd_input)
             sigma_d_weights_i = np.dot(dd_input, current_errors.T)
             sigma_d_weights_i = np.dot(lr, sigma_d_weights_i)
             new_weights = current_weights + sigma_d_weights_i
@@ -221,16 +245,26 @@ class SnakeBrain:
             print(layer.getErrors())
             print('_________')
 
+    def getWeights(self):
+        weights = list()
+        for layer in self.layers:
+            weights.append(layer.getWeights())
 
-    def studing(self, x, learning_rate=0.01):
+        return weights
+
+
+    def studing(self, x, learning_rate=0.1):
         pred_y = self.justToThink(x)
         pred_y = np.array(pred_y)
         stab_y = np.array(list(map(stabilitron, pred_y)))
-        sigma = stab_y - pred_y.T
-        reversed_errors = self.errorSearch(sigma.T)[:-1]
 
+        sigma_1 = stab_y - pred_y.T
+        reversed_errors = self.errorSearch(sigma_1.T)[:-1]
         self.remember(x, reversed_errors, learning_rate)
         stabile_output = self.justToThink(x)
+        stab_y_2 = np.array(list(map(stabilitron, pred_y)))
+        sigma_2 = stab_y_2 - stabile_output.T
+        print(sigma_1, sigma_2)
         return stabile_output
 
 
@@ -238,62 +272,85 @@ class SnakeBrain:
         for epoch in range(epochs):
             pass
 
-    def play(self, detector, learn=False, lr=0.1):
-        m, n = detector.shape
-        input = detector.reshape((m * n, 1))
+    def play(self, x, learn=False, lr=0.1):
         if learn:
-            move = self.studing(input, lr)
+            move = self.studing(x, lr)
         else:
-            move = self.justToThink(detector)
+            move = self.justToThink(x)
 
         return move
 
+    def evolution(self):
+        pass
+
+
+JASA = {
+    (1, 5) : 1,
+    (6, 12) : 2,
+    (13, 20): 3,
+    (21, 30): 4,
+    (31, 45): 6,
+    (46, 60): 7,
+    (61, 76): 8,
+    (77, 95): 10,
+    (96, 122): 11
+}
+
+def checkCount(size):
+    for event in JASA.keys():
+        if size >= event[0] and size <= event[1]:
+            return JASA.get(event)
+        else:
+            return 12
+
+def newGen(brain):
+    i = 0
+    if int(time.time()) % 7 == 0:
+        size = len(brain)
+        rand_i = random.randrange(0, size-1)
+        layer = brain[rand_i]
+        m, n = layer.shape
+        size = m * n
+        count = checkCount(size)
+        for mutation in range(count):
+            rand_m = random.randrange(0, m-1)
+            rand_n = random.randrange(0, n-1)
+            layer[rand_m, rand_n] += random.randrange(-1, 1) // 100
+        brain[rand_i] = layer
+        i = 1
+    return (brain, i)
+
+
+def brainFromWeights(weights_pack):
+    brain = SnakeBrain()
+    for weights in weights_pack:
+        brain.addLayerWithWeights(weights)
+    return brain
 
 
 
 if __name__ == '__main__':
-    detector_1 = Matrix((9, 9), 8)
-    detector_1.reshape([81, 1])
-    detector_2 = Matrix((9, 9), 1)
-    detector_2.reshape([81, 1])
 
+
+    viewfield = Matrix((11, 11), 0)
+    viewfield.matrix[1][2] = 1
+    viewfield.matrix[7][6] = 1
+    viewfield.matrix[1][10] = 1
+
+    viewfield.prettyPrint()
+    viewfield.reshape((121, 1))
+    viewfield.prettyPrint()
     brain_1 = SnakeBrain()
-    brain_1.addLayer((81, 30))
-    brain_1.addLayer((30, 15))
-    brain_1.addLayer((15, 3))
+    brain_1.addLayer((121, 66))
+    brain_1.addLayer((66, 30))
+    brain_1.addLayer((30, 3))
 
-    activations_1 = brain_1.justToThink(detector_1.matrix)
+    ans = brain_1.justToThink(viewfield.matrix)
+    print(ans)
+    # r = brain_1.studing(viewfield.matrix)
+    # print(sys.getsizeof(brain_1))
 
-    brain_1.studing(detector_1.matrix)
-
-
-    # brain_2 = SnakeBrain()
-    # brain_2.addLayer((2, 3))
-    # brain_2.addLayer((3, 2))
-    # brain_2.addLayer((2, 1))
+    # brain_2 = brainFromWeights(brain_1.newBrain())
     #
-    # activations_2 = brain_2.justToThink([2, 1])
-
-    # print(activations_2)
-    # for act in activations_2:
-    #     print(act)
-    #     print("_______________")
-
-
-    # brain_2.errorSearch(10)
-    # brain_2.printErrors()
-
-    # print(activations)
-    # f = brain_1.layers[0]
-    # output_1 = np.dot(f.weights.T, detector_1.matrix)
-    # print(output_1)
-    # output_2 = np.dot(f.weights.T, detector_2.matrix)
-    # print(output_2)
-    # print(sigmoid(output_2))
-    # output_3 = np.dot(f.weights.T, detector_3.matrix)
-    # print(output_3)
-
-    # # print(122, np.dot(f.weights.T, 1))
-
-
+    # print(brain_2.getWeights())
 

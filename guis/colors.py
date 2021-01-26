@@ -1,3 +1,7 @@
+import time
+from cmath import sin
+
+
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 LIGHT_GREY = (180, 180, 180)
@@ -23,5 +27,14 @@ LIGHT_GREEN = (0, 242, 121)
 VERY_LIGHT_GREEN = (189, 255, 223)
 VERY_LIGHT_GREEN_1 = (170, 240, 190)
 VERY_LIGHT_GREEN_2 = (166, 225, 174)
+
+def RAINBOW_1():
+    fi_r = 2
+    fi_g = 0
+    fi_b = 20
+    r_channel = abs(sin(time.time() + fi_r).real) * 255
+    g_channel = abs(sin(time.time() + fi_g).real) * 255
+    b_channel = abs(sin(time.time() + fi_b).real) * 255
+    return (r_channel, g_channel, b_channel)
 
 

@@ -1,12 +1,19 @@
 {
   "DISPLAY_SETTINGS": {
     "WIN_SIZE": [960, 1080],
-    "GAMEFIELD_SIZE_LAB": [900, 540],
+    "WIN_SIZE_LAB2": [1920, 1080],
+    "WIN_SIZE_CLASSROOM": [1000, 1000],
+    "GAMEFIELD_SIZE": [900, 540],
     "GAMEFIELD_SIZE_GAME": [952, 552],
+    "GAMEFIELD_SIZE_LAB2": [960, 930],
     "GF_PIXELS": [60, 36],
+    "GF_PIXELS_LAB2": [60, 36],
     "SNAKE_VIEWFIELD_SIZE": [11, 11],
     "TABLO_SIZE": [150, 100],
-    "BLOCK_SIZE": 15
+    "TABLO_SIZE_LAB2": [150, 80],
+    "BLOCK_SIZE": 15,
+    "BLOCK_SIZE_LAB2": 15,
+    "PLOT_SIZE": [300, 900]
   },
   "GAME_SETTINGS": {
     "STANDART_TICK": 10
@@ -16,6 +23,7 @@
     "DOWN": [0, 1],
     "LEFT": [-1, 0],
     "RIGHT": [1, 0],
+    "STOP": [0, 0],
     "UPRIGHT": [1, -1],
     "UPLEFT": [-1, -1],
     "DOWNLEFT": [-1, 1],
@@ -25,17 +33,17 @@
       "115": "DOWN",
       "100": "RIGHT",
       "97": "LEFT",
-      "101": "UPRIGHT",
+      "101": "STOP",
       "113": "UPLEFT",
       "120": "DOWNLEFT",
       "99": "DOWNRIGHT"
-
     },
     "KEYS_2": {
       "273": "UP",
       "274": "DOWN",
       "275": "RIGHT",
-      "276": "LEFT"
+      "276": "LEFT",
+      "256": "STOP"
     },
     "MAPEDITOR": {
       "MOUSE": {
