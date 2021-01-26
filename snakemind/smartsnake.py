@@ -1,17 +1,22 @@
 import numpy as np
+from utils.handmade import load_params, AllSprites
 from utils.mathmethods import SnakeBrain, newGen
-from utils.handmade import getParams, AllSprites
 from gobjects.snake import Snake
 from utils.mathmethods import Matrix, localExtractor, radToDegrees, brainFromWeights
 from cmath import pi
 import time
 from guis import colors
 
-DISPLAY_SETTINGS = getParams('DISPLAY_SETTINGS')
-SNAKE_VIEWFIELD_SIZE = DISPLAY_SETTINGS['SNAKE_VIEWFIELD_SIZE']
 
-class PhotoSnake:
-    pass
+PARAMS_PATH = 'PARAMS.json'
+params = load_params(PARAMS_PATH)
+snake_viewfield_size = params.get('BRAIN_SETTINGS')['SNAKE_VIEWFIELD_SIZE']
+
+local_moves = {
+        'UP': 0,
+        'LEFT': pi/2,
+        'RIGHT': -pi/2
+    }
 
 class SmartConfig:
     snake_name = str()
@@ -29,19 +34,15 @@ class SmartConfig:
 
 class SmartSnake:
     own_name = 'snake_v3'
-    viewfield_size = SNAKE_VIEWFIELD_SIZE
-    local_moves = {
-        'UP': 0,
-        'LEFT': pi/2,
-        'RIGHT': -pi/2
-    }
+    viewfield_size = snake_viewfield_size
     detectors = {
         1: Matrix(viewfield_size),
         2: Matrix(viewfield_size),
         3: Matrix(viewfield_size)
     }
 
-    def __init__(self, name, pos, dir, matrix_environment, color, a_0=180, in_config=False, exist_brain=False, block_size=10, c=5):
+    def __init__(self, name, pos, dir, matrix_environment, color, a_0=180, in_config=False, exist_brain=False,
+                 block_size=10, c=5):
         self.config = SmartConfig()
         self.color = color
         self.energy = 100
@@ -401,11 +402,3 @@ class SmartMama:
     def evolution(self, gf_matrix):
         for child in self.progeny:
             child.evolution(gf_matrix)
-
-
-
-
-
-
-if __name__ == '__main__':
-    detector_size = SNAKE_VIEWFIELD_SIZE

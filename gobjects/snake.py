@@ -2,7 +2,7 @@ import time
 from cmath import sin, cos
 from guis import colors
 from gobjects.cube import Cube
-from abc import ABC
+from gobjects.object_daddy import GameObject
 
 smoves = [(1, 0), (-1, 0), (0, 1), (0, -1)]
 
@@ -36,7 +36,7 @@ class SConfig:
 
 
 
-class Snake(ABC):
+class Snake(GameObject):
     name = 'snake'
     block_type = 'snake'
     score = 1
@@ -74,7 +74,6 @@ class Snake(ABC):
         tail = Cube(new_block_pos, new_block_dir, color, size=block_size, type=self.block_type, status='moving')
         self.blocks.append(tail)
 
-
     def setOriginPosition(self, o_pos):
         self.config.head_position = o_pos
 
@@ -96,14 +95,9 @@ class Snake(ABC):
         self.config.a_dir = new_angle
 
     def __checkCol(self):
-        head_dir = self.config.head_direction
         poss = self.getAllPos()
         head_pos = self.getHeadPosition()
-        # fut_head_pos = (head_pos[0] + head_dir[0],
-        #                 head_pos[1] + head_dir[1])
         if head_pos in poss[1:]:
-            # print('samocol')
-            # self.freeze()
             self.coll()
         else:
             return False
@@ -145,9 +139,7 @@ class Snake(ABC):
         end = self.blocks[-1]
         return end.getDir()
 
-    def changeColor(self, new_color):
-        for block in self.blocks:
-            block.changeColor(new_color)
+
 
     def pop(self):
         if len(self.blocks) > 3:
@@ -219,7 +211,6 @@ class Snake(ABC):
             if i == 0:
                 self.config.head_position = block.getPosition()
 
-
     def update(self):
         last_dirs = list()
         last_poss = list()
@@ -254,8 +245,3 @@ class Snake(ABC):
                     last_dirs.append(last_dir)
                     last_poss.append(last_pos)
 
-    def draw(self):
-        blocks = list()
-        for segment in self.blocks:
-            blocks.append(segment.draw())
-        return blocks

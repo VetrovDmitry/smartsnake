@@ -1,9 +1,9 @@
 import random
 from guis import colors
 from gobjects.cube import Cube
+from gobjects.object_daddy import GameObject
 
-
-class Food:
+class Food(GameObject):
     name = 'food'
     block_type = 'food'
     status = 'existing'
@@ -27,13 +27,9 @@ class Food:
     def update(self):
         status = self.status
 
-    def draw(self):
-        self.update()
-        response = self.blocks[0].draw()
-        return response
 
 
-class FoodPacker:
+class FoodPacker(GameObject):
     block_type = 'food'
 
     def __init__(self, area, count, color, size):
@@ -50,14 +46,6 @@ class FoodPacker:
     def getArea(self):
         return self.area
 
-    def getAllPos(self):
-        all_pos = list()
-        blocks = self.blocks
-        for element in blocks:
-            all_pos.append(element.getPosition())
-
-        return all_pos
-
     def __genPositions(self, area, count):
         positions = list()
         area_x_1 = area[0][0]
@@ -67,8 +55,8 @@ class FoodPacker:
         dx = area_x_2 - area_x_1
         dy = area_y_2 - area_y_1
         for position in range(count):
-            random_x = random.randrange(0, dx)
-            random_y = random.randrange(0, dy)
+            random_x = random.randrange(0, dx+1, 1)
+            random_y = random.randrange(0, dy+1, 1)
             random_x += area_x_1
             random_y += area_y_1
             positions.append((random_x, random_y))
@@ -91,7 +79,7 @@ class FoodPacker:
             random_y = random.randrange(0, dy)
             random_x += area_x_1
             random_y += area_y_1
-            if (random_x, random_y) not in self.getAllPos():
+            if (random_x, random_y) not in self.getAllPositions():
                 searching = False
 
         return (random_x, random_y)
@@ -132,10 +120,3 @@ class FoodPacker:
 
     def update(self):
         self.checkCount()
-
-    def draw(self):
-        blocks = list()
-        for segment in self.blocks:
-            blocks.append(segment.draw())
-
-        return blocks

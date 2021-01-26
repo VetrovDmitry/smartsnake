@@ -14,21 +14,20 @@ def Pause():
                 pause = False
 
 
-def WorldRules(m_obj, f_obj, w_obj):
-    moving_poss = m_obj.getAllPositions()
-    for sprite in m_obj.sprites:
-        sprite_head_pos = sprite.getHeadPosition()
-        if sprite_head_pos in f_obj.getAllPositions():
-            eaten_food = f_obj.getBlockByPos(sprite_head_pos)
-            food_object = f_obj.getSpriteByPos(sprite_head_pos)
-            food_area = food_object.getArea()
-            new_pos = smart_pos_for_area(food_area, moving_poss)
-            eaten_food.changePos(new_pos)
-            sprite.addBlock()
-        elif sprite_head_pos in w_obj.getAllPositions():
-            sprite.coll()
-        # elif sprite_head_pos in m_obj.getExceptHead(sprite_head_pos):
-        #     print('ddddd')
+def WorldRulesPVE(m_sprites, f_sprites, w_sprites):
+    sprite = m_sprites.getSprites()[0]
+    sprite_head_pos = sprite.getHeadPosition()
+    sprite_all_pos = sprite.getAllPos()
+    if sprite_head_pos in f_sprites.getAllPos():
+        eaten_food = f_sprites.getBlockByPos(sprite_head_pos)
+        food_object = f_sprites.getSprites()[0]
+        food_area = food_object.getArea()
+        new_pos = smart_pos_for_area(food_area, sprite_all_pos)
+        eaten_food.changePos(new_pos)
+        sprite.addBlock()
+    elif sprite_head_pos in w_sprites.getAllPos():
+        sprite.coll()
+
 
 
 class Map:

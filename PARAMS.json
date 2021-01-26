@@ -1,22 +1,18 @@
 {
   "DISPLAY_SETTINGS": {
-    "WIN_SIZE": [960, 1080],
-    "WIN_SIZE_LAB2": [1920, 1080],
-    "WIN_SIZE_CLASSROOM": [1000, 1000],
-    "GAMEFIELD_SIZE": [900, 540],
-    "GAMEFIELD_SIZE_GAME": [952, 552],
-    "GAMEFIELD_SIZE_LAB2": [960, 930],
-    "GF_PIXELS": [60, 36],
-    "GF_PIXELS_LAB2": [60, 36],
-    "SNAKE_VIEWFIELD_SIZE": [11, 11],
-    "TABLO_SIZE": [150, 100],
-    "TABLO_SIZE_LAB2": [150, 80],
-    "BLOCK_SIZE": 15,
-    "BLOCK_SIZE_LAB2": 15,
-    "PLOT_SIZE": [300, 900]
+    "CLASSROOM_V2": {
+      "WIN_SIZE": [700, 700],
+      "TABLO_SIZE": [150, 100],
+      "GAMEFIELD_SIZE": [600, 600],
+      "BLOCK_SIZE": 20,
+      "GRID_SIZE": 1
+    }
   },
   "GAME_SETTINGS": {
     "STANDART_TICK": 10
+  },
+  "BRAIN_SETTINGS": {
+    "SNAKE_VIEWFIELD_SIZE": [7, 7]
   },
   "CONTROLS" : {
     "UP" : [0, -1],

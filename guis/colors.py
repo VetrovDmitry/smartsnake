@@ -30,11 +30,14 @@ VERY_LIGHT_GREEN_2 = (166, 225, 174)
 
 def RAINBOW_1():
     fi_r = 2
+    k_r = 0.2
+    r_channel = abs(sin(time.time() * k_r + fi_r).real) * 255
     fi_g = 0
-    fi_b = 20
-    r_channel = abs(sin(time.time() + fi_r).real) * 255
-    g_channel = abs(sin(time.time() + fi_g).real) * 255
-    b_channel = abs(sin(time.time() + fi_b).real) * 255
+    k_g = 0.2
+    g_channel = abs(sin(time.time() * k_g + fi_g).real) * 180
+    fi_b = 8
+    k_b = 0.2
+    b_channel = abs(sin(time.time() * k_b + fi_b).real) * 255
     return (r_channel, g_channel, b_channel)
 
 

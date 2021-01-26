@@ -1,6 +1,15 @@
 from guis import colors
 import pygame as pg
 from random import randrange as rrange
+from utils.mathmethods import posToLoc
+
+detections_colors = {
+        0: colors.DARK_GREEN,
+        1: colors.VERY_LIGHT_GREEN,
+        2: colors.LIGHT_BLUE,
+        3: colors.LIGHT_PINK
+    }
+
 
 def DrawGrid(surface, block_size, color=colors.WHITE, grid_size=4):
     """DRAW GRID!"""
@@ -29,6 +38,15 @@ def RandomColors(count):
 
 
 def render(surface, object):
-    """BLITING ALL SPRITES TO CURRENT SURFACE"""
+    """BLITING OBJECT SPRITES INTO CURRENT SURFACE"""
     for pixel in object.draw():
         pg.draw.rect(surface, pixel[0], pixel[1])
+
+
+def renderPixels(surface, pixels_poss, pixel_types, pixel_size):
+    for i, pixel_pos in enumerate(pixels_poss):
+        current_type = pixel_types[i]
+        pixel_color = detections_colors.get(current_type)
+        pixel_loc = posToLoc(pixel_pos, pixel_size)
+        pixel = (pixel_loc[0], pixel_loc[1], pixel_size, pixel_size)
+        pg.draw.rect(surface, pixel_color, pixel)

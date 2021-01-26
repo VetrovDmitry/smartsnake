@@ -11,8 +11,7 @@ modes = {
 
 def start_launcher():
     mode_name = 'class_room'
-    mode = modes.get(mode_name)
-    mode.start()
+    modes.get(mode_name)
 
 
 

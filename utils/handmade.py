@@ -1,5 +1,6 @@
 import random
 from guis import colors
+from guis.utils import render
 from abc import ABC
 import json
 
@@ -33,22 +34,6 @@ def load_params(param_path):
     params = json.loads(text)
     return params
 
-def posToLoc(pos, pixel_size):
-    x = pos[0] * pixel_size
-    y = pos[1] * pixel_size
-    return (x, y)
-
-
-
-def renderPixels(surface, pixels_poss, pixel_types, pixel_size):
-    for i, pixel_pos in enumerate(pixels_poss):
-        current_type = pixel_types[i]
-        pixel_color = DETECTIONS_COLORS.get(current_type)
-        pixel_loc = posToLoc(pixel_pos, pixel_size)
-        pixel = (pixel_loc[0], pixel_loc[1], pixel_size, pixel_size)
-
-
-        pg.draw.rect(surface, pixel_color, pixel)
 
 def randomXY(range, step=1):
     """GENERATOR FOR RANDOM PAIR"""
@@ -77,8 +62,8 @@ def smart_pos_for_area(area_border, all_positions):
     dx = area_x_2 - area_x_1
     dy = area_y_2 - area_y_1
     while search:
-        random_x = random.randrange(0, dx)
-        random_y = random.randrange(0, dy)
+        random_x = random.randrange(0, dx+1, 1)
+        random_y = random.randrange(0, dy+1, 1)
         random_x += area_x_1
         random_y += area_y_1
         if (random_x, random_y) not in all_positions:
@@ -95,12 +80,10 @@ class AllSprites(ABC):
     def __init__(self):
         self.sprites = list()
 
-    def getAllPositions(self):
+    def getAllPos(self):
         poss = list()
         for sprite in self.sprites:
-            for pos in sprite.getAllPos():
-                poss.append(pos)
-
+            poss += sprite.getAllPos()
         return poss
 
     def append(self, new_sprite):

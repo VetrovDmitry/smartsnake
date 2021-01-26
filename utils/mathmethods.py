@@ -4,11 +4,25 @@ import random
 import time
 
 
+
+def angleToDirection(angle):
+    dir_x = int(cos(angle).real)
+    dir_y = int(sin(angle).real)
+    return (dir_x, dir_y)
+
+def posToLoc(pos, pixel_size):
+    x = pos[0] * pixel_size
+    y = pos[1] * pixel_size
+    return (x, y)
+
+
 def sig(x):
     return 1 / (1 + np.exp(-x))
 
+
 def sig_der(x):
     return x * (1 - x)
+
 
 def stabilitron(x):
     if x >= 0.85:
@@ -16,6 +30,7 @@ def stabilitron(x):
     else:
         y = 0
     return y
+
 
 def multiplyByRow(matrix_1, matrix_2):
     if len(matrix_1) == len(matrix_2):
@@ -32,9 +47,9 @@ def multiplyByRow(matrix_1, matrix_2):
     return response
 
 
-
 class Matrix:
     edge_pos = (0, 0)
+
     def __init__(self, m_size, substrate=0):
         self.size = m_size
         self.substrate = substrate
@@ -48,7 +63,6 @@ class Matrix:
 
     def refresh(self):
         self.matrix = self.createMatrix(self.size, self.substrate)
-
 
     def createMatrix(self, size, substrate):
         n = size[1]
@@ -76,8 +90,6 @@ class Matrix:
             angle_of_rotation += 360
 
         rotations = int(angle_of_rotation // 90)
-        #
-
         if self.size[0] == self.size[1]:
             for rotation in range(rotations):
                 matrix = np.rot90(matrix)
@@ -239,7 +251,6 @@ class SnakeBrain:
             self.layers[i].setWeights(new_weights)
         return true_weights
 
-
     def printErrors(self):
         for layer in self.layers:
             print(layer.getErrors())
@@ -251,7 +262,6 @@ class SnakeBrain:
             weights.append(layer.getWeights())
 
         return weights
-
 
     def studing(self, x, learning_rate=0.1):
         pred_y = self.justToThink(x)
@@ -296,12 +306,14 @@ JASA = {
     (96, 122): 11
 }
 
+
 def checkCount(size):
     for event in JASA.keys():
         if size >= event[0] and size <= event[1]:
             return JASA.get(event)
         else:
             return 12
+
 
 def newGen(brain):
     i = 0
@@ -329,9 +341,8 @@ def brainFromWeights(weights_pack):
 
 
 
+
 if __name__ == '__main__':
-
-
     viewfield = Matrix((11, 11), 0)
     viewfield.matrix[1][2] = 1
     viewfield.matrix[7][6] = 1

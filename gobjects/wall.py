@@ -1,8 +1,9 @@
 from guis import colors
 from gobjects.cube import Cube
+from gobjects.object_daddy import GameObject
 
 
-class Wall:
+class Wall(GameObject):
     blocks = list()
     name = 'wall'
     block_type = 'barrier'
@@ -17,13 +18,6 @@ class Wall:
         self.color = new_color
         for block in self.blocks:
             block.changeColor(self.color)
-
-    def getAllPos(self):
-        all_pos = list()
-        blocks = self.blocks
-        for element in blocks:
-            all_pos.append(element.getPosition())
-        return all_pos
 
     def checkPoints(self, points):
         response = int()
@@ -62,10 +56,3 @@ class Wall:
 
     def update(self):
         pass
-
-    def draw(self):
-        blocks = list()
-        for element in self.blocks:
-            blocks.append((element.draw()))
-
-        return blocks
