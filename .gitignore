@@ -2,7 +2,7 @@ modes/mapeditor.py
 nn.py
 .idea/
 __pycache__/
-pads/
+pads
 screens/
 snakenviron/
 laboratories/
