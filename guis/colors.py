@@ -1,6 +1,6 @@
 import time
 from cmath import sin
-
+from random import randrange as rrange
 
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
@@ -28,16 +28,24 @@ VERY_LIGHT_GREEN = (189, 255, 223)
 VERY_LIGHT_GREEN_1 = (170, 240, 190)
 VERY_LIGHT_GREEN_2 = (166, 225, 174)
 
+
 def RAINBOW_1():
-    fi_r = 2
-    k_r = 0.2
+    fi_r, fi_g, fi_b = 2, 0, 8
+    k_r, k_g, k_b = 0.2, 0.2, 0.2
     r_channel = abs(sin(time.time() * k_r + fi_r).real) * 255
-    fi_g = 0
-    k_g = 0.2
     g_channel = abs(sin(time.time() * k_g + fi_g).real) * 180
-    fi_b = 8
-    k_b = 0.2
     b_channel = abs(sin(time.time() * k_b + fi_b).real) * 255
     return (r_channel, g_channel, b_channel)
+
+
+def RANDOM_COLORS(count):
+    colors = list()
+    for c in range(count):
+        R = rrange(0, 255)
+        G = rrange(0, 255)
+        B = rrange(0, 255)
+        color = (R, G, B)
+        colors.append(color)
+    return colors
 
 

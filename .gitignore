@@ -6,4 +6,6 @@ pads
 screens/
 snakenviron/
 laboratories/
+nntest.py
+simplenn.py
 .gitignore

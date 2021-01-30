@@ -11,7 +11,7 @@ class Tablo(GraphicManager):
     def __init__(self, label, size, loc, background_color=colors.GREY, plus_color=colors.WHITE):
         self.label = label
         self.size = size
-        self.location = loc
+        self.setLocation(loc)
         self.background_color = background_color
         self.plus_color = plus_color
 
@@ -22,25 +22,24 @@ class Tablo(GraphicManager):
         self.background_color = new_color
 
     def update(self, count, status):
-        layer = self.createRect(self.size)
-
-        layer.fill(self.background_color)
-
-        if status:
-            self.text_color = self.plus_color
-        else:
-            self.text_color = colors.BLACK
-
-        table_name = self.createRotateText(self.label, self.text_color, self.name_size)
-        text_size = table_name.get_size()
-        center_1 = self.find_center(self.size, text_size)
-        layer.blit(table_name, (1, center_1[1]))
-
-        count_text = self.createText(count, self.text_color, self.count_size)
-        count_text_size = count_text.get_size()
-        center_2 = self.find_center(self.size, count_text_size)
-        layer.blit(count_text, center_2)
-        self.layer = layer
+        pass
+        # layer.fill(self.background_color)
+        #
+        # if status:
+        #     self.text_color = self.plus_color
+        # else:
+        #     self.text_color = colors.BLACK
+        #
+        # table_name = self.createRotateText(self.label, self.text_color, self.name_size)
+        # text_size = table_name.get_size()
+        # center_1 = self.find_center(self.size, text_size)
+        # layer.blit(table_name, (1, center_1[1]))
+        #
+        # count_text = self.createText(count, self.text_color, self.count_size)
+        # count_text_size = count_text.get_size()
+        # center_2 = self.find_center(self.size, count_text_size)
+        # layer.blit(count_text, center_2)
+        # self.layer = layer
 
     def draw(self, surface):
         surface.blit(self.layer, self.location)

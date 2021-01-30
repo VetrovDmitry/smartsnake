@@ -15,11 +15,13 @@ local_moves = {
         'RIGHT': pi/2
     }
 
+
 class Visitor(Snake):
     """using to create training data"""
+    viewfield_size = snake_viewfield_size
     __angle = 0
     __local_angle = 0
-    __vision_screen = Matrix(snake_viewfield_size)
+    __vision_screen = Matrix(viewfield_size)
     __detectors = {
         1: Matrix(snake_viewfield_size),
         2: Matrix(snake_viewfield_size),
@@ -62,11 +64,25 @@ class Visitor(Snake):
         vision_angle = -self.getLocalAngle() + self.getAngle()
         vision_degrees = radToDegrees(vision_angle)
         self.__vision_screen.rotate(vision_degrees)
+        self.__fillDetectors()
         return self.__vision_screen
 
     def getVisionScreen(self):
         return self.__vision_screen
 
-    def refreshDetectors(self):
+    def __fillDetectors(self):
+        self.__refreshDetectors()
+        for m, row in enumerate(self.getVisionScreen().matrix):
+            for n, signal in enumerate(row):
+                if self.__detectors.get(signal):
+                    self.__detectors.get(signal).matrix[m][n] = 1
+                else:
+                    pass
+
+    def getDetectors(self):
+        return self.__detectors
+
+
+    def __refreshDetectors(self):
         for detector in self.__detectors.values():
             detector.refresh()

@@ -1,7 +1,7 @@
 {
   "DISPLAY_SETTINGS": {
     "CLASSROOM_V2": {
-      "WIN_SIZE": [700, 700],
+      "WIN_SIZE": [1400, 700],
       "TABLO_SIZE": [150, 100],
       "GAMEFIELD_SIZE": [600, 600],
       "BLOCK_SIZE": 20,
@@ -12,7 +12,7 @@
     "STANDART_TICK": 10
   },
   "BRAIN_SETTINGS": {
-    "SNAKE_VIEWFIELD_SIZE": [7, 7]
+    "SNAKE_VIEWFIELD_SIZE": [11, 11]
   },
   "CONTROLS" : {
     "UP" : [0, -1],

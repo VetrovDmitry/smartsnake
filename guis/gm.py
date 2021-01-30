@@ -4,8 +4,12 @@ from abc import ABC
 
 class GraphicManager(ABC):
     """PRIMITIVE GRAPHIC OPERATIONS"""
+    location = tuple()
     font_size = 30
     cursor_thickness = 4
+
+    def setLocation(self, location):
+        self.location = location
 
     def find_center(self, first_layer_size, second_layer_size):
         """returns center for two layers"""
@@ -18,6 +22,11 @@ class GraphicManager(ABC):
         rect = pg.Surface(ab)
         return rect
 
+    def createBackground(self, size):
+        self.background = pg.Surface(size)
+
+    def fillBackground(self, color):
+        self.background.fill(color)
 
     def cursor_size(self, t_size):
         cursor_x = t_size[0] + self.cursor_thickness * 2
@@ -34,3 +43,6 @@ class GraphicManager(ABC):
         font = pg.font.Font(None, size)
         text = font.render(str(label), 4, color)
         return text
+
+    def draw(self, surface):
+        surface.blit(self.background, self.location)

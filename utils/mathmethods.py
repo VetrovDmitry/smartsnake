@@ -15,10 +15,9 @@ def posToLoc(pos, pixel_size):
     y = pos[1] * pixel_size
     return (x, y)
 
-
 def sig(x):
-    return 1 / (1 + np.exp(-x))
-
+    sig_x = 1 / (1 + np.exp(-x))
+    return sig_x
 
 def sig_der(x):
     return x * (1 - x)
@@ -114,6 +113,11 @@ class Matrix:
         center_y = rows // 2
         self.matrix[center_y][center_x] = new_value
 
+    def flatten(self):
+        m, n = self.matrix.shape
+        new_shape = (1, m * n)
+        new_matrix = self.matrix.reshape(new_shape)
+        return new_matrix[0]
 
 def centerToEdge(m_size, pos):
     if m_size[0] % 2 != 0 and m_size[0] == m_size[1]:
@@ -209,6 +213,12 @@ class SnakeBrain:
     def predict(self, X):
         pass
 
+    def reshapeInput(self, x):
+        m, n = x.shape
+        new_x = x
+        new_x.reshape((m * n, 1))
+        return new_x
+
     def justToThink(self, x):
         activations = [x]
         for layer in self.layers:
@@ -217,39 +227,59 @@ class SnakeBrain:
             activation = np.dot(current_weights.T, input_data)
             activation = sig(activation)
             activations.append(activation)
-
         return activations[-1]
 
     def errorSearch(self, error):
         errors = [error]
-        layers = self.layers
-
-        for layer in reversed(layers):
+        for layer in reversed(self.layers):
             last_error = errors[-1]
             current_weights = layer.weights
             currnet_errors = np.dot(current_weights, last_error)
             layer.setErrors(currnet_errors)
             errors.append(currnet_errors)
 
-        return errors
+        return errors[:-1]
+
+
+    def __stabilize(self, matrix):
+        if matrix.shape == (matrix.shape[0], ):
+            matrix = matrix.reshape((matrix.shape[0], 1))
+        return matrix
+
+    def stb(self, matrix):
+        return self.__stabilize(matrix)
+
 
     def remember(self, x, rev_errors, lr):
+        x = self.__stabilize(x)
         true_activations = [x]
         true_weights = list()
         for i, err in enumerate(reversed(rev_errors)):
-            input_i = true_activations[-1]
-            d_input_i = sig_der(input_i)
-            dd_input = multiplyByRow(input_i, d_input_i)
-            current_weights = self.layers[i].weights
-            current_errors = err
-            print(current_weights, dd_input)
-            sigma_d_weights_i = np.dot(dd_input, current_errors.T)
-            sigma_d_weights_i = np.dot(lr, sigma_d_weights_i)
-            new_weights = current_weights + sigma_d_weights_i
-            output_1 = sig(np.dot(new_weights.T, input_i))
-            true_activations.append(output_1)
-            self.layers[i].setWeights(new_weights)
+
+            activation = true_activations[-1]
+            x_der_x = multiplyByRow(activation, sig_der(activation))
+            err = self.__stabilize(err)
+            d_weights = np.dot(x_der_x, err.T)
+            d_weights = np.dot(d_weights, lr)
+            current_weights = self.getWeights()[i]
+            new_weights = current_weights + d_weights
+
+            new_activation = np.dot(new_weights.T, activation)
+            true_activations.append(new_activation)
+            true_weights.append(new_weights)
+            # break
+            # self.setWeights(true_weights)
+
+        self.setWeights(true_weights)
+
         return true_weights
+
+    def setWeights(self, new_weights):
+        # print(len(new_weights))
+        # print(len(self.layers))
+        for i, layer in enumerate(self.layers):
+            current_new_weights = new_weights[i]
+            layer.setWeights(current_new_weights)
 
     def printErrors(self):
         for layer in self.layers:
@@ -262,6 +292,7 @@ class SnakeBrain:
             weights.append(layer.getWeights())
 
         return weights
+
 
     def studing(self, x, learning_rate=0.1):
         pred_y = self.justToThink(x)
@@ -277,6 +308,15 @@ class SnakeBrain:
         print(sigma_1, sigma_2)
         return stabile_output
 
+    def learning(self, x, y, learning_rate=0.1):
+        pred_y = self.justToThink(x)
+        sigma_1 = y - pred_y
+        reversed_error = self.errorSearch(sigma_1)
+        true_weights = self.remember(x, reversed_error, learning_rate)
+        pred_y_2 = self.justToThink(x)
+        print('true: {0}, pred_1: {1}, pred_2: {2}'.format(y, pred_y, pred_y_2))
+        return true_weights
+        # answer_check = self.justToThink(x)
 
     def train(self, X, Y, epochs):
         for epoch in range(epochs):

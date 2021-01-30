@@ -3,11 +3,12 @@ import pygame as pg
 from random import randrange as rrange
 from utils.mathmethods import posToLoc
 
+
 detections_colors = {
-        0: colors.DARK_GREEN,
-        1: colors.VERY_LIGHT_GREEN,
-        2: colors.LIGHT_BLUE,
-        3: colors.LIGHT_PINK
+        0: colors.BLACK,
+        1: colors.LIGHT_BLUE,
+        2: colors.LIGHT_PINK,
+        3: colors.LIGHT_GREEN
     }
 
 
@@ -25,16 +26,6 @@ def DrawGrid(surface, block_size, color=colors.WHITE, grid_size=4):
         y += block_size
         pg.draw.line(surface, grid_color, (0, y), (surface_size[0], y), grid_size)
 
-
-def RandomColors(count):
-    colors = list()
-    for c in range(count):
-        R = rrange(0, 255)
-        G = rrange(0, 255)
-        B = rrange(0, 255)
-        color = (R, G, B)
-        colors.append(color)
-    return colors
 
 
 def render(surface, object):

@@ -79,7 +79,7 @@ class FoodPacker(GameObject):
             random_y = random.randrange(0, dy)
             random_x += area_x_1
             random_y += area_y_1
-            if (random_x, random_y) not in self.getAllPositions():
+            if (random_x, random_y) not in self.getAllPos():
                 searching = False
 
         return (random_x, random_y)
