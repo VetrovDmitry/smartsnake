@@ -5,8 +5,11 @@ from guis.visiontablo import VisionTablo
 from guis.utils import DrawGrid, renderPixels
 from utils.handmade import load_params, find_center, AllSprites
 from utils.gamesatisfaction import Pause, Map, WorldRulesPVE
-from utils.mathmethods import Matrix, SnakeBrain
+from utils.mathmethods import Matrix, SnakeBrain, multiplyByRow, createFullMatrixFromTemplate
 from snakemind.visitor import Visitor
+from masktemplates import romb_1
+
+
 from cmath import pi
 import numpy as np
 
@@ -38,6 +41,11 @@ gf_x_count =  gamefield_size[0] // block_size
 gf_y_count =  gamefield_size[1] // block_size
 gamefield_matrix_size = (gf_x_count, gf_y_count)
 gf_matrix = Matrix(gamefield_matrix_size, 0)
+mask_template = np.array(romb_1)
+template_matrix = Matrix(mask_template.shape)
+template_matrix.createMatrixFromArray(mask_template)
+
+mask = createFullMatrixFromTemplate(template_matrix)
 
 """VISUALISATION TEMPLATE"""
 
@@ -89,7 +97,7 @@ x, y = teacher.viewfield_size
 layer_size_1 = (x * y, 9)
 layer_size_2 = (9, 5)
 layer_size_3 = (5, 3)
-learning_rate = 0.01
+learning_rate = 0.001
 
 brain = SnakeBrain()
 brain.addLayer(layer_size_1)
@@ -115,20 +123,23 @@ def Controls():
         teacher.moveByRot('UP')
         right_answer = np.array([0, 1, 0])
         food_detector = teacher.getDetectors().get(2)
-        brain.learning(food_detector.flatten(), right_answer, learning_rate)
+        x = multiplyByRow(food_detector.flatten(), mask.flatten())
+        brain.learning(x, right_answer, learning_rate)
         teacher.update()
     if key[pg.K_KP4]:
         teacher.moveByRot('LEFT')
         right_answer = np.array([1, 0, 0])
         food_detector = teacher.getDetectors().get(2)
-        brain.learning(food_detector.flatten(), right_answer, learning_rate)
+        x = multiplyByRow(food_detector.flatten(), mask.flatten())
+        brain.learning(x, right_answer, learning_rate)
         teacher.update()
 
     if key[pg.K_KP6]:
         teacher.moveByRot('RIGHT')
         right_answer = np.array([0, 0, 1])
         food_detector = teacher.getDetectors().get(2)
-        brain.learning(food_detector.flatten(), right_answer, learning_rate)
+        x = multiplyByRow(food_detector.flatten(), mask.flatten())
+        brain.learning(x, right_answer, learning_rate)
         teacher.update()
     if key[pg.K_p]:
         food.plusBlock()
@@ -139,8 +150,13 @@ def Controls():
 
     if key[pg.K_u]:
         food_detector = teacher.getDetectors().get(2)
-        answer = brain.justToThink(food_detector.flatten())
-        print(answer)
+        x = multiplyByRow(food_detector.flatten(), mask.flatten())
+
+        activations_with_mask = brain.justToThink(x, all_activatios=True)
+        activations_without_mask = brain.justToThink(food_detector.flatten(), all_activatios=True)
+        print(activations_with_mask)
+        print('\n')
+        print(activations_without_mask)
 
 
 
