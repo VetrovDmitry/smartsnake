@@ -1,7 +1,7 @@
 from guis import colors
 import pygame as pg
 from random import randrange as rrange
-from utils.mathmethods import posToLoc
+from mathmethods.mathfuctions import posToLoc
 
 
 detections_colors = {

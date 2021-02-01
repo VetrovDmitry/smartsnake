@@ -101,7 +101,8 @@ class FoodPacker(GameObject):
         self.count = count
 
     def minusBlock(self):
-        self.blocks.pop()
+        if len(self.blocks) > 1:
+            self.blocks.pop()
 
     def plusBlock(self):
         new_pos = self.__genPosition()

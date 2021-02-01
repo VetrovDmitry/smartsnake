@@ -1,22 +1,22 @@
 import pygame as pg
+from cmath import pi
+import numpy as np
 from gobjects.food import FoodPacker
 from guis import colors
 from guis.visiontablo import VisionTablo
 from guis.utils import DrawGrid, renderPixels
 from utils.handmade import load_params, find_center, AllSprites
 from utils.gamesatisfaction import Pause, Map, WorldRulesPVE
-from utils.mathmethods import Matrix, SnakeBrain, multiplyByRow, createFullMatrixFromTemplate
+from mathmethods.matrix import Matrix, multiplyByRow, createFullMatrixFromTemplate
+from mathmethods.neuralnetwork import SnakeBrain
 from snakemind.visitor import Visitor
 from masktemplates import romb_1
-
-
-from cmath import pi
-import numpy as np
 
 
 """ACTIONS"""
 
 actions = ['LEFT', 'UP', 'RIGHT']
+iters = 0
 
 """PRESTART SETTINGS"""
 
@@ -94,15 +94,17 @@ moving_sprites.append(teacher)
 #  Smart object
 
 x, y = teacher.viewfield_size
-layer_size_1 = (x * y, 9)
-layer_size_2 = (9, 5)
-layer_size_3 = (5, 3)
-learning_rate = 0.001
+layer_size_1 = (x * y, 15)
+layer_size_2 = (15, 9)
+layer_size_3 = (9, 3)
+# layer_size_4 = (5, 3)
+learning_rate = 0.005
 
-brain = SnakeBrain()
+brain = SnakeBrain('food_detector')
 brain.addLayer(layer_size_1)
 brain.addLayer(layer_size_2)
 brain.addLayer(layer_size_3)
+# brain.addLayer(layer_size_4)
 
 
 """CREATING VISUALISATION"""
@@ -116,6 +118,7 @@ panarama = VisionTablo(panarama_pos, panarama_size, 15)
 """IN-GAME FUNCTIONS"""
 
 def Controls():
+    global iters
     key = pg.key.get_pressed()
     if key[pg.K_ESCAPE]:
         Pause()
@@ -126,6 +129,7 @@ def Controls():
         x = multiplyByRow(food_detector.flatten(), mask.flatten())
         brain.learning(x, right_answer, learning_rate)
         teacher.update()
+        iters += 1
     if key[pg.K_KP4]:
         teacher.moveByRot('LEFT')
         right_answer = np.array([1, 0, 0])
@@ -133,7 +137,7 @@ def Controls():
         x = multiplyByRow(food_detector.flatten(), mask.flatten())
         brain.learning(x, right_answer, learning_rate)
         teacher.update()
-
+        iters += 1
     if key[pg.K_KP6]:
         teacher.moveByRot('RIGHT')
         right_answer = np.array([0, 0, 1])
@@ -141,13 +145,17 @@ def Controls():
         x = multiplyByRow(food_detector.flatten(), mask.flatten())
         brain.learning(x, right_answer, learning_rate)
         teacher.update()
+        iters += 1
+    if key[pg.K_s]:
+        print(iters)
     if key[pg.K_p]:
         food.plusBlock()
     if key[pg.K_o]:
         food.minusBlock()
     if key[pg.K_r]:
         teacher.respawn((10, 10), (1, 0))
-
+    if key[pg.K_q]:
+        brain.saveBrain('brains')
     if key[pg.K_u]:
         food_detector = teacher.getDetectors().get(2)
         x = multiplyByRow(food_detector.flatten(), mask.flatten())
@@ -156,7 +164,8 @@ def Controls():
         activations_without_mask = brain.justToThink(food_detector.flatten(), all_activatios=True)
         print(activations_with_mask)
         print('\n')
-        print(activations_without_mask)
+        weights = brain.getWeights()
+        print(weights)
 
 
 
@@ -201,7 +210,7 @@ def start():
         #  Brain teaching
 
         food_detector = teacher.getDetectors().get(2)
-        brain_answer = brain.justToThink(food_detector.flatten())
+        # brain_answer = brain.justToThink(food_detector.flatten())
 
         """RENDERING"""
 

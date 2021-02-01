@@ -1,10 +1,11 @@
-import numpy as np
-from utils.handmade import load_params, AllSprites
-from utils.mathmethods import SnakeBrain, newGen
-from gobjects.snake import Snake
-from utils.mathmethods import Matrix, localExtractor, radToDegrees, brainFromWeights
-from cmath import pi
 import time
+import numpy as np
+from cmath import pi
+from utils.handmade import load_params, AllSprites
+from gobjects.snake import Snake
+from mathmethods.matrix import Matrix, localExtractor
+from mathmethods.neuralnetwork import brainFromWeights, SnakeBrain, newGen
+from mathmethods.mathfuctions import radToDegrees
 from guis import colors
 
 

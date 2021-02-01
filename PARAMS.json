@@ -4,7 +4,7 @@
       "WIN_SIZE": [1400, 700],
       "TABLO_SIZE": [150, 100],
       "GAMEFIELD_SIZE": [600, 600],
-      "BLOCK_SIZE": 20,
+      "BLOCK_SIZE": 30,
       "GRID_SIZE": 1
     }
   },
@@ -13,6 +13,9 @@
   },
   "BRAIN_SETTINGS": {
     "SNAKE_VIEWFIELD_SIZE": [11, 11]
+  },
+  "MATRIX_SETTINGS": {
+    "DTYPE": "float128"
   },
   "CONTROLS" : {
     "UP" : [0, -1],

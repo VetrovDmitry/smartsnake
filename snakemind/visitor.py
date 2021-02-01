@@ -1,7 +1,8 @@
-from gobjects.snake import Snake
-from utils.mathmethods import Matrix, localExtractor, radToDegrees, angleToDirection
-from utils.handmade import load_params
 from cmath import pi
+from gobjects.snake import Snake
+from mathmethods.matrix import Matrix, localExtractor
+from mathmethods.mathfuctions import radToDegrees, angleToDirection
+from utils.handmade import load_params
 
 
 PARAMS_PATH = 'PARAMS.json'
