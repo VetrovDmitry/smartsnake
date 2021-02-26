@@ -13,7 +13,9 @@ class Config:
         self.color = color
         self.size = size
 
+
 class Cube:
+    """Класс куб который позволяет создавать квадраты"""
     def __init__(self, position, dir=(0, 0), color=colors.WHITE, size=20, type='food', status='stop', head=False):
         self.config = Config(position, color, size)
         self.config.moment_dir = dir

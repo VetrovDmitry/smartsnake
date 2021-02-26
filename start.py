@@ -1,11 +1,10 @@
 import modes.classroomV2 as ClassRoom
 # import nntest as NNTest
-
-PARAMS_PATH = 'PARAMS.json'
-
+# import modes.photostudio as Photostudio
 
 modes = {
     'class_room': ClassRoom,
+    # 'photostudion':Photostudio,
     # 'nn_test': NNTest
 }
 

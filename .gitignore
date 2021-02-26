@@ -8,4 +8,5 @@ snakenviron/
 laboratories/
 nntest.py
 simplenn.py
+brains/
 .gitignore

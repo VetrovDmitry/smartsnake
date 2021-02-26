@@ -4,7 +4,14 @@
       "WIN_SIZE": [1400, 700],
       "TABLO_SIZE": [150, 100],
       "GAMEFIELD_SIZE": [600, 600],
-      "BLOCK_SIZE": 30,
+      "BLOCK_SIZE": 20,
+      "GRID_SIZE": 1
+    },
+    "PHOTOSTUDIO": {
+      "WIN_SIZE": [700, 700],
+      "TABLO_SIZE": [150, 100],
+      "VIEWFIELD_SIZE": [500, 500],
+      "MATRIX_SIZE": [11, 11],
       "GRID_SIZE": 1
     }
   },

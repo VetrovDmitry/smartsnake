@@ -29,6 +29,7 @@ class VisionTablo(GraphicManager):
         pass
 
     def drawFromMatrix(self, matrix, num):
+
         matrix_dsize = matrix.matrix.shape[0]
         pixel_size = int(self.display_size // matrix_dsize)
         pixels_poss, pixel_types = matrix.Pdraw()

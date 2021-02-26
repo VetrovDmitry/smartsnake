@@ -98,7 +98,7 @@ layer_size_1 = (x * y, 15)
 layer_size_2 = (15, 9)
 layer_size_3 = (9, 3)
 # layer_size_4 = (5, 3)
-learning_rate = 0.005
+learning_rate = 0.001
 
 brain = SnakeBrain('food_detector')
 brain.addLayer(layer_size_1)
@@ -111,7 +111,7 @@ brain.addLayer(layer_size_3)
 
 pg.init()
 win = pg.display.set_mode(win_size)
-pg.display.set_caption('classroom')
+pg.display.set_caption('classroomV2')
 gamefield = pg.Surface(gamefield_size)
 panarama = VisionTablo(panarama_pos, panarama_size, 15)
 

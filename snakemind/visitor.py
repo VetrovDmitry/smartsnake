@@ -87,3 +87,8 @@ class Visitor(Snake):
     def __refreshDetectors(self):
         for detector in self.__detectors.values():
             detector.refresh()
+
+
+    def updateViewfield(self, viewfield):
+        self.__vision_screen = viewfield
+        self.__fillDetectors()

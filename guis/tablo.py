@@ -5,7 +5,7 @@ import pygame as pg
 class Tablo(GraphicManager):
     """TABLO SHOWS MOMENT PARAMS"""
     text_color = colors.BLACK
-    name_size = 25
+    name_size = 22
     count_size = 50
 
     def __init__(self, label, size, loc, background_color=colors.GREY, plus_color=colors.WHITE):
@@ -21,25 +21,26 @@ class Tablo(GraphicManager):
     def changeBGColor(self, new_color):
         self.background_color = new_color
 
-    def update(self, count, status):
-        pass
-        # layer.fill(self.background_color)
-        #
-        # if status:
-        #     self.text_color = self.plus_color
-        # else:
-        #     self.text_color = colors.BLACK
-        #
-        # table_name = self.createRotateText(self.label, self.text_color, self.name_size)
-        # text_size = table_name.get_size()
-        # center_1 = self.find_center(self.size, text_size)
-        # layer.blit(table_name, (1, center_1[1]))
-        #
-        # count_text = self.createText(count, self.text_color, self.count_size)
-        # count_text_size = count_text.get_size()
-        # center_2 = self.find_center(self.size, count_text_size)
-        # layer.blit(count_text, center_2)
-        # self.layer = layer
+    def update(self, count, status, moment_color):
+        # pass
+        layer = pg.Surface(self.size)
+        layer.fill(moment_color)
+
+        if status:
+            self.text_color = self.plus_color
+        else:
+            self.text_color = colors.BLACK
+
+        table_name = self.createRotateText(self.label, self.text_color, self.name_size)
+        text_size = table_name.get_size()
+        center_1 = self.find_center(self.size, text_size)
+        layer.blit(table_name, (1, center_1[1]))
+
+        count_text = self.createText(count, self.text_color, self.count_size)
+        count_text_size = count_text.get_size()
+        center_2 = self.find_center(self.size, count_text_size)
+        layer.blit(count_text, center_2)
+        self.layer = layer
 
     def draw(self, surface):
         surface.blit(self.layer, self.location)

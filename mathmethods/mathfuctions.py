@@ -1,5 +1,6 @@
 from math import pi, sin, cos
 import numpy as np
+from decimal import Decimal
 
 
 def angleToDirection(angle):
@@ -25,6 +26,7 @@ def sig(x):
 
 
 def sig_der(x):
+    # x = Decimal(x)
     return x * (1 - x)
 
 
@@ -38,3 +40,9 @@ def stabilitron(x):
     else:
         y = 0
     return y
+
+
+if __name__ == '__main__':
+    x = 0.000000001
+    y = sig(x)
+    print(Decimal(x))
