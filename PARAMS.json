@@ -1,21 +1,35 @@
 {
   "DISPLAY_SETTINGS": {
-    "WIN_SIZE": [960, 1080],
-    "GAMEFIELD_SIZE_LAB": [900, 540],
-    "GAMEFIELD_SIZE_GAME": [952, 552],
-    "GF_PIXELS": [60, 36],
-    "SNAKE_VIEWFIELD_SIZE": [11, 11],
-    "TABLO_SIZE": [150, 100],
-    "BLOCK_SIZE": 15
+    "CLASSROOM_V2": {
+      "WIN_SIZE": [1400, 700],
+      "TABLO_SIZE": [150, 100],
+      "GAMEFIELD_SIZE": [600, 600],
+      "BLOCK_SIZE": 20,
+      "GRID_SIZE": 1
+    },
+    "PHOTOSTUDIO": {
+      "WIN_SIZE": [700, 700],
+      "TABLO_SIZE": [150, 100],
+      "VIEWFIELD_SIZE": [500, 500],
+      "MATRIX_SIZE": [11, 11],
+      "GRID_SIZE": 1
+    }
   },
   "GAME_SETTINGS": {
     "STANDART_TICK": 10
+  },
+  "BRAIN_SETTINGS": {
+    "SNAKE_VIEWFIELD_SIZE": [11, 11]
+  },
+  "MATRIX_SETTINGS": {
+    "DTYPE": "float128"
   },
   "CONTROLS" : {
     "UP" : [0, -1],
     "DOWN": [0, 1],
     "LEFT": [-1, 0],
     "RIGHT": [1, 0],
+    "STOP": [0, 0],
     "UPRIGHT": [1, -1],
     "UPLEFT": [-1, -1],
     "DOWNLEFT": [-1, 1],
@@ -25,17 +39,17 @@
       "115": "DOWN",
       "100": "RIGHT",
       "97": "LEFT",
-      "101": "UPRIGHT",
+      "101": "STOP",
       "113": "UPLEFT",
       "120": "DOWNLEFT",
       "99": "DOWNRIGHT"
-
     },
     "KEYS_2": {
       "273": "UP",
       "274": "DOWN",
       "275": "RIGHT",
-      "276": "LEFT"
+      "276": "LEFT",
+      "256": "STOP"
     },
     "MAPEDITOR": {
       "MOUSE": {

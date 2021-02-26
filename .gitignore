@@ -1,7 +1,12 @@
-mapeditor.py
+modes/mapeditor.py
 nn.py
 .idea/
 __pycache__/
-pads/
+pads
 screens/
 snakenviron/
+laboratories/
+nntest.py
+simplenn.py
+brains/
+.gitignore
